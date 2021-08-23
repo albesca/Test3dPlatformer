@@ -2,7 +2,7 @@ extends KinematicBody
 
 
 const HEIGHT = 2.0
-const DRAG_FACTOR = 10.0
+const DRAG_FACTOR = 100.0
 const GRAVITY_FACTOR = 10.0
 const FALL_THRESHOLD = -0.5
 const FALL_FACTOR = 4.0
@@ -11,20 +11,28 @@ export var walking_speed = 10.0
 export var running_factor = 2.0
 export var jump_strenght = 10.0
 export var angle_precision = 0.05
+export var max_angle_to_move = PI / 4.0
+export var distance_precision = 1
 export var speed_precision = 0.01
 var velocity = Vector3.ZERO
 var destination = null
+var running = false
+var speed = 0
+var last_distance_to_destination = 0
+var last_angle_to_destination = 0
 
 
 func jump(_camera, event, click_position, _click_normal, _shape_idx):
 	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT \
 			and event.pressed:
 		if is_on_floor():
-			destination = null
+			reset_destination()
 			velocity += get_jump_vector(click_position.y - transform.origin.y) \
 					* jump_strenght
 			print(velocity)
 		else:
+			#TODO add raycast to see if I'm actually in midair
+			#TODO add a counter since last jump to avoid double jump
 			print("I can't jump in midair!")
 
 
@@ -41,25 +49,45 @@ func _physics_process(delta):
 	
 	if destination and is_on_floor():
 		var angle_to_target = get_angle_to_target(destination)
-		if abs(angle_to_target) > angle_precision:
-			print("I should turn to ", angle_to_target)
+		if abs(angle_to_target) > angle_precision and \
+					(last_angle_to_destination == 0 or abs(angle_to_target) <= \
+					abs(last_angle_to_destination)):
 			var angle_rotation = clamp(abs(angle_to_target) * rotating_speed * \
 					delta, 0, abs(angle_to_target)) * (angle_to_target / \
 					abs(angle_to_target))
 			rotate_y(angle_rotation)
-		else:
-			print("I'm pointing in the right way")
-			destination = null
 
-		print("I should move...")
+		var distance_to_destination = 0
+		if destination:
+			distance_to_destination = transform.origin.distance_to(destination)
+
+		if distance_to_destination > distance_precision and \
+				(distance_to_destination < last_distance_to_destination or \
+				last_distance_to_destination == 0 or velocity == Vector3.ZERO):
+			last_distance_to_destination = distance_to_destination
+			if abs(angle_to_target) < max_angle_to_move:
+				speed = clamp(speed + walking_speed * delta, 0, walking_speed)
+				velocity = transform.basis.z * speed
+
+		else:
+			if abs(angle_to_target) < angle_precision or \
+					(last_distance_to_destination < distance_to_destination \
+					and last_distance_to_destination != 0) or \
+					(last_angle_to_destination != 0 and abs(angle_to_target) > \
+					abs(last_angle_to_destination)):
+				reset_destination()
+
+		last_angle_to_destination = angle_to_target
 
 	if is_on_floor():
 		velocity.y = 0
 		if !destination:
-			velocity.z = clamp(velocity.z - DRAG_FACTOR * delta, 0, \
-					abs(velocity.z))
-			velocity.x = clamp(velocity.x - DRAG_FACTOR * delta, 0, \
-					abs(velocity.x))
+			if velocity.z != 0:
+				velocity.z = clamp(abs(velocity.z) - DRAG_FACTOR * delta, 0, \
+						abs(velocity.z)) * (abs(velocity.z) / velocity.z)
+			if velocity.x != 0:
+				velocity.x = clamp(abs(velocity.x) - DRAG_FACTOR * delta, 0, \
+						abs(velocity.x)) * (abs(velocity.x) / velocity.x)
 			
 			if abs(velocity.z) < speed_precision:
 				velocity.z = 0
@@ -119,6 +147,13 @@ func round_vector3(vector, precision):
 
 
 func set_destination(new_destination):
+	reset_destination()
 	destination = new_destination
 	print(transform.origin)
 	print(destination)
+
+
+func reset_destination():
+	destination = null
+	last_distance_to_destination = 0
+	last_angle_to_destination = 0
