@@ -6,8 +6,11 @@ const DRAG_FACTOR = 100.0
 const GRAVITY_FACTOR = 10.0
 const FALL_THRESHOLD = -0.5
 const FALL_FACTOR = 4.0
+const MIN_ROTATING_SPEED = 0.25
+const WORLD_FLOOR = -20.0
 export var rotating_speed = 5.0
 export var walking_speed = 10.0
+export var acceleration_factor = 20.0
 export var running_factor = 2.0
 export var jump_strenght = 10.0
 export var angle_precision = 0.05
@@ -20,28 +23,18 @@ var running = false
 var speed = 0
 var last_distance_to_destination = 0
 var last_angle_to_destination = 0
+var starting_transform
 
 
-func jump(_camera, event, click_position, _click_normal, _shape_idx):
-	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT \
-			and event.pressed:
-		if is_on_floor():
-			reset_destination()
-			velocity += get_jump_vector(click_position.y - transform.origin.y) \
-					* jump_strenght
-			print(velocity)
-		else:
-			#TODO add raycast to see if I'm actually in midair
-			#TODO add a counter since last jump to avoid double jump
-			print("I can't jump in midair!")
+func _init():
+	starting_transform = transform
 
 
-func get_jump_vector(jump_factor):
-	var jump_angle = acos(clamp(jump_factor / HEIGHT, 0.25, 0.75))
-	var result = transform.basis.z.rotated(transform.basis.x, -jump_angle)
-	return result
+func _process(_delta):
+	if transform.origin.y < WORLD_FLOOR:
+		reset_player()
 
-
+		
 func _physics_process(delta):
 	transform = transform.orthonormalized()
 	if velocity != Vector3.ZERO:
@@ -52,9 +45,8 @@ func _physics_process(delta):
 		if abs(angle_to_target) > angle_precision and \
 					(last_angle_to_destination == 0 or abs(angle_to_target) <= \
 					abs(last_angle_to_destination)):
-			var angle_rotation = clamp(abs(angle_to_target) * rotating_speed * \
-					delta, 0, abs(angle_to_target)) * (angle_to_target / \
-					abs(angle_to_target))
+
+			var angle_rotation = get_angle_rotation(angle_to_target, delta)
 			rotate_y(angle_rotation)
 
 		var distance_to_destination = 0
@@ -62,11 +54,16 @@ func _physics_process(delta):
 			distance_to_destination = transform.origin.distance_to(destination)
 
 		if distance_to_destination > distance_precision and \
-				(distance_to_destination < last_distance_to_destination or \
-				last_distance_to_destination == 0 or velocity == Vector3.ZERO):
+				is_getting_closer(distance_to_destination):
+
 			last_distance_to_destination = distance_to_destination
 			if abs(angle_to_target) < max_angle_to_move:
-				speed = clamp(speed + walking_speed * delta, 0, walking_speed)
+				var applied_acceleration = acceleration_factor
+				if angle_to_target > PI / 2.0 and velocity.length() > \
+						speed_precision:
+					applied_acceleration = DRAG_FACTOR * -1
+				speed = clamp(speed + applied_acceleration * delta, 0, \
+						walking_speed)
 				velocity = transform.basis.z * speed
 
 		else:
@@ -100,6 +97,26 @@ func _physics_process(delta):
 			fall_factor = FALL_FACTOR
 		velocity.y = clamp(velocity.y - GRAVITY_FACTOR * delta * fall_factor, \
 				-GRAVITY_FACTOR * fall_factor, velocity.y)
+
+
+func jump(_camera, event, click_position, _click_normal, _shape_idx):
+	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT \
+			and event.pressed:
+		if is_on_floor():
+			reset_destination()
+			velocity += get_jump_vector(click_position.y - transform.origin.y) \
+					* jump_strenght
+			print(velocity)
+		else:
+			#TODO add raycast to see if I'm actually in midair
+			#TODO add a counter since last jump to avoid double jump
+			print("I can't jump in midair!")
+
+
+func get_jump_vector(jump_factor):
+	var jump_angle = acos(clamp(jump_factor / HEIGHT, 0.25, 0.75))
+	var result = transform.basis.z.rotated(transform.basis.x, -jump_angle)
+	return result
 
 
 func get_angle_to_target(target):
@@ -157,3 +174,33 @@ func reset_destination():
 	destination = null
 	last_distance_to_destination = 0
 	last_angle_to_destination = 0
+	speed = 0
+
+
+func is_getting_closer(distance_to_destination):
+	var result = false
+	if last_distance_to_destination == 0:
+		result = true
+	elif velocity == Vector3.ZERO:
+		result = true
+	elif distance_to_destination < last_distance_to_destination:
+		result = true
+	elif distance_to_destination > distance_precision * 2:
+		result = true
+	
+	return result
+
+
+func get_angle_rotation(angle_to_target, delta):
+	var rotating_factor = clamp(rotating_speed * (abs(angle_to_target) / PI), \
+			rotating_speed * MIN_ROTATING_SPEED, rotating_speed)
+	var result = clamp(abs(angle_to_target) * rotating_factor * \
+			delta, 0, abs(angle_to_target)) * (angle_to_target / \
+			abs(angle_to_target))
+	return result
+
+
+func reset_player():
+	transform = starting_transform
+	reset_destination()
+	velocity = Vector3.ZERO
