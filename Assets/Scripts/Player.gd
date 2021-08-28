@@ -1,5 +1,6 @@
 extends KinematicBody
 
+signal reset_level
 
 const HEIGHT = 2.0
 const DRAG_FACTOR = 100.0
@@ -20,10 +21,12 @@ export var speed_precision = 0.01
 var velocity = Vector3.ZERO
 var destination = null
 var running = false
+var jumping
 var speed = 0
 var last_distance_to_destination = 0
 var last_angle_to_destination = 0
 var starting_transform
+var standing_on_ground
 
 
 func _init():
@@ -36,11 +39,15 @@ func _process(_delta):
 
 		
 func _physics_process(delta):
+	standing_on_ground = !jumping and (is_on_floor() or \
+			$GroundDetector.is_colliding())
 	transform = transform.orthonormalized()
 	if velocity != Vector3.ZERO:
 		velocity = move_and_slide(velocity, Vector3.UP)
+		if is_on_floor():
+			jumping = false
 	
-	if destination and is_on_floor():
+	if destination and standing_on_ground:
 		var angle_to_target = get_angle_to_target(destination)
 		if abs(angle_to_target) > angle_precision and \
 					(last_angle_to_destination == 0 or abs(angle_to_target) <= \
@@ -76,7 +83,7 @@ func _physics_process(delta):
 
 		last_angle_to_destination = angle_to_target
 
-	if is_on_floor():
+	if standing_on_ground:
 		velocity.y = 0
 		if !destination:
 			if velocity.z != 0:
@@ -102,14 +109,13 @@ func _physics_process(delta):
 func jump(_camera, event, click_position, _click_normal, _shape_idx):
 	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT \
 			and event.pressed:
-		if is_on_floor():
+		if standing_on_ground and !jumping:
 			reset_destination()
 			velocity += get_jump_vector(click_position.y - transform.origin.y) \
 					* jump_strenght
+			jumping = true
 			print(velocity)
 		else:
-			#TODO add raycast to see if I'm actually in midair
-			#TODO add a counter since last jump to avoid double jump
 			print("I can't jump in midair!")
 
 
@@ -128,39 +134,6 @@ func get_angle_to_target(target):
 		angle_to_target = (2 * PI - abs(angle_to_target)) * \
 				(abs(angle_to_target) / angle_to_target) * -1
 	return angle_to_target
-
-
-func are_basis_equal_ignore_axis(base_basis, target_basis, axis, precision):
-	var base_x = round_vector3(base_basis.x, precision)
-	var base_y = round_vector3(base_basis.y, precision)
-	var base_z = round_vector3(base_basis.z, precision)
-	var target_x = round_vector3(target_basis.x, precision)
-	var target_y = round_vector3(target_basis.y, precision)
-	var target_z = round_vector3(target_basis.z, precision)
-	if axis == Vector3.UP:
-		base_y = Vector3.ZERO
-		target_y = Vector3.ZERO
-	elif axis == Vector3.RIGHT:
-		base_x = Vector3.ZERO
-		target_x = Vector3.ZERO
-	elif axis == Vector3.FORWARD:
-		base_z = Vector3.ZERO
-		target_z = Vector3.ZERO
-	
-	var result = false
-	if base_x == target_x and base_y == target_y and base_z == target_z:
-		result = true
-	
-	return result
-	
-	
-func round_vector3(vector, precision):
-	var result = Vector3(
-		round(vector.x / precision) * precision,
-		round(vector.y / precision) * precision,
-		round(vector.z / precision) * precision
-	)
-	return result
 
 
 func set_destination(new_destination):
@@ -204,3 +177,4 @@ func reset_player():
 	transform = starting_transform
 	reset_destination()
 	velocity = Vector3.ZERO
+	emit_signal("reset_level")

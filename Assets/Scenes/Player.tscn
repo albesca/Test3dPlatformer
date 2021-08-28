@@ -24,10 +24,16 @@ transform = Transform( 1, 0, 0, 0, 2, 0, 0, 0, 1, 0, 1, 0 )
 radius = 0.5
 material = SubResource( 2 )
 
-[node name="CSGCylinder" type="CSGCylinder" parent="."]
+[node name="Nose" type="CSGCylinder" parent="."]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 1.7, 0.35 )
 radius = 0.1
 height = 0.2
 cone = true
 material = SubResource( 3 )
+
+[node name="GroundDetector" type="RayCast" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0 )
+enabled = true
+cast_to = Vector3( 0, -0.2, 0 )
+collision_mask = 8
 [connection signal="input_event" from="." to="." method="jump"]
