@@ -45,3 +45,11 @@ func reset_camera():
 
 func reset_level():
 	reset_camera()
+	$Flag.reset()
+
+
+func level_done():
+	print("level done!")
+	yield(get_tree().create_timer(2), "timeout")
+	print("now we should get back to the menu or on to the next level")
+	$Player.reset_player()
