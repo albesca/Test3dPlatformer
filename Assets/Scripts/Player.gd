@@ -1,6 +1,8 @@
 extends KinematicBody
 
 signal reset_level
+signal spawn_destination_marker(position)
+signal despawn_destination_marker
 
 const HEIGHT = 2.0
 const DRAG_FACTOR = 100.0
@@ -139,6 +141,7 @@ func get_angle_to_target(target):
 func set_destination(new_destination):
 	reset_destination()
 	destination = new_destination
+	emit_signal("spawn_destination_marker", destination)
 	print(transform.origin)
 	print(destination)
 
@@ -148,6 +151,7 @@ func reset_destination():
 	last_distance_to_destination = 0
 	last_angle_to_destination = 0
 	speed = 0
+	emit_signal("despawn_destination_marker")
 
 
 func is_getting_closer(distance_to_destination):

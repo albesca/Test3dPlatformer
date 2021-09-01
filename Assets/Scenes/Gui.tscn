@@ -1,0 +1,41 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Images/CameraButtonNormal.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Images/CameraButtonPressed.png" type="Texture" id=2]
+
+[node name="Gui" type="Control"]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="TextureButton" parent="."]
+margin_right = 108.0
+margin_bottom = 20.0
+texture_normal = ExtResource( 1 )
+texture_pressed = ExtResource( 2 )
+
+[node name="DebugData" type="Control" parent="."]
+visible = false
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="DebugData"]
+margin_top = 27.0
+margin_right = 40.0
+margin_bottom = 41.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="DebugData"]
+margin_top = 54.0
+margin_right = 40.0
+margin_bottom = 68.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
