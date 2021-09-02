@@ -2,6 +2,12 @@ extends Node
 
 
 const DEFAULT_PRECISION = 0.01
+const MIN_ROTATING_SPEED = 0.25
+const WORLD_FLOOR = -20.0
+const DRAG_FACTOR = 100.0
+const FALL_THRESHOLD = -0.5
+const GRAVITY_FACTOR = 10.0
+const FALL_FACTOR = 4.0
 
 
 func round_vector3(vector, precision = DEFAULT_PRECISION):

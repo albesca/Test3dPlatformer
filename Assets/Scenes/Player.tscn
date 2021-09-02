@@ -36,4 +36,16 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0 )
 enabled = true
 cast_to = Vector3( 0, -0.2, 0 )
 collision_mask = 8
+
+[node name="BackCamera" type="Camera" parent="."]
+transform = Transform( -1, 1.62921e-07, -2.82187e-07, 0, 0.866025, 0.5, 3.25841e-07, 0.5, -0.866025, 0, 5, -5 )
+
+[node name="LeftCamera" type="Camera" parent="."]
+transform = Transform( -1.62921e-07, -0.5, 0.866025, 0, 0.866025, 0.5, -1, 8.14603e-08, -1.41093e-07, 7.5, 5, 2.5 )
+
+[node name="RightCamera" type="Camera" parent="."]
+transform = Transform( -1.62921e-07, 0.5, -0.866025, 0, 0.866025, 0.5, 1, 8.14603e-08, -1.41093e-07, -7.5, 5, 2.5 )
+
+[node name="FrontCamera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 5, 7.5 )
 [connection signal="input_event" from="." to="." method="jump"]
