@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Assets/Scripts/PlayerCamera.gd" type="Script" id=1]
+
+[node name="Camera" type="Camera"]
+script = ExtResource( 1 )
+
+[node name="RayCastHead" type="RayCast" parent="."]
+enabled = true
+collision_mask = 8
+
+[node name="RayCastFeet" type="RayCast" parent="."]
+enabled = true
+collision_mask = 8

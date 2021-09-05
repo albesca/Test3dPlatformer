@@ -12,6 +12,10 @@ func _init():
 	starting_transform = transform
 
 
+func _ready():
+	set_cameras_raycasts()
+
+
 func _process(_delta):
 	if transform.origin.y < Global.WORLD_FLOOR:
 		reset_player()
@@ -51,3 +55,14 @@ func reset_player():
 	reset_destination()
 	velocity = Vector3.ZERO
 	emit_signal("reset_level")
+
+
+func set_cameras_raycasts():
+	$BackCamera.set_raycasts(global_transform.origin + Vector3(0, 2, 0), \
+			global_transform.origin)
+	$FrontCamera.set_raycasts(global_transform.origin + Vector3(0, 2, 0), \
+			global_transform.origin)
+	$LeftCamera.set_raycasts(global_transform.origin + Vector3(0, 2, 0), \
+			global_transform.origin)
+	$RightCamera.set_raycasts(global_transform.origin + Vector3(0, 2, 0), \
+			global_transform.origin)
