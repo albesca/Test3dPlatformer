@@ -3,6 +3,7 @@ extends Camera
 
 var feet_obstruction
 var head_obstruction
+var raycast_active = false
 
 
 func set_raycasts(player_head_position, player_feet_position):
@@ -22,19 +23,20 @@ func set_raycasts(player_head_position, player_feet_position):
 
 
 func _physics_process(_delta):
-	if current:
+	if current and raycast_active:
 		if !$RayCastFeet.enabled:
 			$RayCastFeet.set_deferred("enabled", true)
 		if !$RayCastHead.enabled:
 			$RayCastHead.set_deferred("enabled", true)
+
+		if $RayCastFeet.is_colliding():
+			$RayCastFeet.get_collider().see_through = true
+
+		if $RayCastHead.is_colliding():
+			$RayCastHead.get_collider().see_through = true
 	else:
 		if $RayCastFeet.enabled:
 			$RayCastFeet.set_deferred("enabled", false)
 		if $RayCastHead.enabled:
 			$RayCastHead.set_deferred("enabled", false)
-		
-	if $RayCastFeet.is_colliding():
-		$RayCastFeet.get_collider().see_through = true
 
-	if $RayCastHead.is_colliding():
-		$RayCastHead.get_collider().see_through = true

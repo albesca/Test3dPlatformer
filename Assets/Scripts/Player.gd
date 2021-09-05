@@ -66,3 +66,27 @@ func set_cameras_raycasts():
 			global_transform.origin + Vector3(0, 0.1, 0))
 	$RightCamera.set_raycasts(global_transform.origin + Vector3(0, 2, 0), \
 			global_transform.origin + Vector3(0, 0.1, 0))
+
+
+func potential_obstruction_entered(body):
+	body.check_obstruction = true
+	set_camera_raycasts_active()
+
+
+func potential_obstruction_exited(body):
+	body.check_obstruction = false
+	set_camera_raycasts_inactive()
+
+
+func set_camera_raycasts_active():
+	$BackCamera.raycast_active = true
+	$FrontCamera.raycast_active = true
+	$LeftCamera.raycast_active = true
+	$RightCamera.raycast_active = true
+
+
+func set_camera_raycasts_inactive():
+	$BackCamera.raycast_active = false
+	$FrontCamera.raycast_active = false
+	$LeftCamera.raycast_active = false
+	$RightCamera.raycast_active = false

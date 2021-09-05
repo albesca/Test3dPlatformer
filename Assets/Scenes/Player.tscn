@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Assets/Scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Scenes/PlayerCamera.tscn" type="PackedScene" id=2]
@@ -11,6 +11,10 @@ albedo_color = Color( 1, 0.588235, 0, 1 )
 
 [sub_resource type="SpatialMaterial" id=3]
 albedo_color = Color( 1, 0.4, 0, 1 )
+
+[sub_resource type="CylinderShape" id=4]
+radius = 8.0
+height = 6.0
 
 [node name="Player" type="KinematicBody"]
 collision_mask = 8
@@ -49,4 +53,14 @@ transform = Transform( -1.62921e-07, -0.5, 0.866025, 0, 0.866025, 0.5, -1, 8.146
 
 [node name="RightCamera" parent="." instance=ExtResource( 2 )]
 transform = Transform( -1.62921e-07, 0.5, -0.866025, 0, 0.866025, 0.5, 1, 8.14603e-08, -1.41093e-07, -7.5, 5, 2.5 )
+
+[node name="ObstructionArea" type="Area" parent="."]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape" type="CollisionShape" parent="ObstructionArea"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0 )
+shape = SubResource( 4 )
 [connection signal="input_event" from="." to="." method="jump"]
+[connection signal="body_entered" from="ObstructionArea" to="." method="potential_obstruction_entered"]
+[connection signal="body_exited" from="ObstructionArea" to="." method="potential_obstruction_exited"]
