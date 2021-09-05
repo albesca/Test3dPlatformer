@@ -6,7 +6,9 @@
 extents = Vector3( 5, 0.5, 2.5 )
 
 [sub_resource type="SpatialMaterial" id=2]
-albedo_color = Color( 0.886275, 1, 0.105882, 1 )
+resource_local_to_scene = true
+flags_transparent = true
+albedo_color = Color( 0.886275, 1, 0.105882, 0.521569 )
 
 [node name="Ledge" type="StaticBody"]
 collision_layer = 8

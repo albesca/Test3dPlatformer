@@ -59,10 +59,10 @@ func reset_player():
 
 func set_cameras_raycasts():
 	$BackCamera.set_raycasts(global_transform.origin + Vector3(0, 2, 0), \
-			global_transform.origin)
+			global_transform.origin + Vector3(0, 0.1, 0))
 	$FrontCamera.set_raycasts(global_transform.origin + Vector3(0, 2, 0), \
-			global_transform.origin)
+			global_transform.origin + Vector3(0, 0.1, 0))
 	$LeftCamera.set_raycasts(global_transform.origin + Vector3(0, 2, 0), \
-			global_transform.origin)
+			global_transform.origin + Vector3(0, 0.1, 0))
 	$RightCamera.set_raycasts(global_transform.origin + Vector3(0, 2, 0), \
-			global_transform.origin)
+			global_transform.origin + Vector3(0, 0.1, 0))

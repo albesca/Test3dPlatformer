@@ -4,7 +4,7 @@ extends StaticBody
 signal level_done
 
 
-func player_entered(body):
+func player_entered(_body):
 	print("the player reached the flag!")
 	$VictoryParticles.emitting = true
 	$VictoryTimer.start()
