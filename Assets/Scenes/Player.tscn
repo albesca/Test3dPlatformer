@@ -17,7 +17,7 @@ radius = 8.0
 height = 6.0
 
 [node name="Player" type="KinematicBody"]
-collision_mask = 8
+collision_mask = 28
 script = ExtResource( 1 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
@@ -44,15 +44,19 @@ collision_mask = 8
 
 [node name="BackCamera" parent="." instance=ExtResource( 2 )]
 transform = Transform( -1, -1.62921e-07, 2.82187e-07, 0, 0.866025, 0.5, -3.25841e-07, 0.5, -0.866025, 0, 5, -5 )
+camera_name = "back"
 
 [node name="FrontCamera" parent="." instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 5, 7.5 )
+camera_name = "front"
 
 [node name="LeftCamera" parent="." instance=ExtResource( 2 )]
 transform = Transform( -1.62921e-07, -0.5, 0.866025, 0, 0.866025, 0.5, -1, 8.14603e-08, -1.41093e-07, 7.5, 5, 2.5 )
+camera_name = "left"
 
 [node name="RightCamera" parent="." instance=ExtResource( 2 )]
 transform = Transform( -1.62921e-07, 0.5, -0.866025, 0, 0.866025, 0.5, 1, 8.14603e-08, -1.41093e-07, -7.5, 5, 2.5 )
+camera_name = "right"
 
 [node name="ObstructionArea" type="Area" parent="."]
 collision_layer = 0

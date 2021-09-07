@@ -29,6 +29,7 @@ Global="*res://Assets/Scripts/Global.gd"
 3d_physics/layer_2="Enemies"
 3d_physics/layer_3="Objectives"
 3d_physics/layer_4="World"
+3d_physics/layer_5="Interactables"
 
 [rendering]
 

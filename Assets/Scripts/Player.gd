@@ -6,6 +6,7 @@ signal despawn_destination_marker
 
 
 var starting_transform
+var obstructing_bodies = []
 
 
 func _init():
@@ -70,12 +71,20 @@ func set_cameras_raycasts():
 
 func potential_obstruction_entered(body):
 	body.check_obstruction = true
+	if !body in obstructing_bodies:
+		obstructing_bodies.append(body)
+
 	set_camera_raycasts_active()
 
 
 func potential_obstruction_exited(body):
 	body.check_obstruction = false
-	set_camera_raycasts_inactive()
+	var body_index = obstructing_bodies.find(body)
+	if body_index > -1:
+		obstructing_bodies.remove(body_index)
+	
+	if len(obstructing_bodies) == 0:
+		set_camera_raycasts_inactive()
 
 
 func set_camera_raycasts_active():

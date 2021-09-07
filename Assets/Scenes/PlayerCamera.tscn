@@ -1,6 +1,12 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Assets/Scripts/PlayerCamera.gd" type="Script" id=1]
+
+[sub_resource type="SphereMesh" id=1]
+radius = 0.2
+height = 0.4
+radial_segments = 8
+rings = 4
 
 [node name="Camera" type="Camera"]
 script = ExtResource( 1 )
@@ -12,3 +18,7 @@ collision_mask = 8
 [node name="RayCastFeet" type="RayCast" parent="."]
 enabled = true
 collision_mask = 8
+
+[node name="CameraPosition" type="CSGMesh" parent="."]
+visible = false
+mesh = SubResource( 1 )

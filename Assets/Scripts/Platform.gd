@@ -8,7 +8,7 @@ var base_albedo
 
 
 func _ready():
-	base_albedo = $CSGBox.material.albedo_color.a
+	base_albedo = $CSGBox.material.albedo_color
 
 
 func set_destination(_camera, event, click_position, click_normal, _shape_idx):
@@ -22,12 +22,15 @@ func set_destination(_camera, event, click_position, click_normal, _shape_idx):
 
 func _physics_process(_delta):
 	if check_obstruction:
+		#$CSGBox.material.albedo_color.b = 1.0
 		if see_through:
 			$CSGBox.material.flags_transparent = true
-			$CSGBox.material.albedo_color.a = base_albedo / 2.0
+			$CSGBox.material.albedo_color.a = base_albedo.a / 2.0
 			input_ray_pickable = false
-			see_through = false
+			#see_through = false
 		else:
 			$CSGBox.material.flags_transparent = false
-			$CSGBox.material.albedo_color.a = base_albedo
+			$CSGBox.material.albedo_color.a = base_albedo.a
 			input_ray_pickable = true
+	#else:
+	#	$CSGBox.material.albedo_color.b = base_albedo.b

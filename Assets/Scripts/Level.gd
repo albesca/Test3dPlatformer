@@ -9,6 +9,7 @@ var destination_marker
 func _ready():
 	cameras = [$Player/BackCamera, $Player/LeftCamera, $Player/FrontCamera, \
 			$Player/RightCamera]
+	reset_camera()
 	destination_marker_scene = load("res://Assets/Scenes/DestinationMarker.tscn")
 
 
@@ -32,18 +33,21 @@ func switch_camera():
 	var next = false
 	for camera in cameras:
 		if next:
-			camera.current = true
+			camera.make_current()
 			next = false
 			break
-		if camera.current:
-			next = true
+		else:
+			if camera.current_camera:
+				next = true
+
+			camera.make_not_current()
 	
 	if next:
 		reset_camera()
 
 
 func reset_camera():
-	cameras[0].current = true
+	cameras[0].make_current()
 
 
 func reset_level():
@@ -67,3 +71,9 @@ func spawn_destination_marker(destination):
 func despawn_destination_marker():
 	if destination_marker:
 		destination_marker.queue_free()
+
+
+func check_pickable(object, pickable):
+	if pickable:
+		if $Player.destination == object.transform.origin:
+			object.pick()
