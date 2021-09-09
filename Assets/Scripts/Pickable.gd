@@ -2,7 +2,7 @@ extends KinematicBody
 
 
 signal pickable(object, pickable)
-signal picked
+signal picked(object)
 signal set_destination(destination_position)
 var pickable
 
@@ -27,5 +27,5 @@ func pick_or_reach(_camera, event, _click_position, _click_normal, _shape_idx):
 
 
 func pick():
-	emit_signal("picked")
+	emit_signal("picked", self)
 	queue_free()

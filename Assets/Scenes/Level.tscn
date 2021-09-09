@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Assets/Scenes/Ground.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Assets/Scripts/Level.gd" type="Script" id=2]
@@ -7,11 +7,11 @@
 [ext_resource path="res://Assets/Scenes/Ledge.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Assets/Scenes/Flag.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Assets/Scenes/Gui.tscn" type="PackedScene" id=7]
-[ext_resource path="res://Assets/Scenes/Pickable.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Assets/Music/in_the_forest_at_night.ogg" type="AudioStream" id=9]
 
 [node name="Level" type="Spatial"]
 script = ExtResource( 2 )
+pickable_positions = [ Vector3( 10, 0, 0 ), Vector3( -20, 8, 20 ), Vector3( -5, 0, -15 ) ]
 
 [node name="Gound" parent="." instance=ExtResource( 1 )]
 
@@ -31,12 +31,6 @@ transform = Transform( 0.5, -0.433013, 0.75, 0, 0.866025, 0.5, -0.866025, -0.25,
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( -1.62921e-07, -0.258819, 0.965926, 0, 0.965926, 0.258819, -1, 4.2167e-08, -1.57369e-07, 10, 5, 10 )
-
-[node name="Pickable" parent="." instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 8, 20 )
-
-[node name="Pickable2" parent="." instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 0 )
 
 [node name="Platform" parent="." instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 37.5, 20, 15 )
@@ -79,6 +73,8 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 17.5, 14, -22.5 )
 
 [node name="Flag" parent="." instance=ExtResource( 6 )]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 40, 20, 20 )
+goal_enabled_flag = Color( 0, 1, 0, 1 )
+goal_disabled_flag = Color( 1, 0, 0, 1 )
 
 [node name="Gui" parent="." instance=ExtResource( 7 )]
 
@@ -89,10 +85,6 @@ autoplay = true
 [connection signal="despawn_destination_marker" from="Player" to="." method="despawn_destination_marker"]
 [connection signal="reset_level" from="Player" to="." method="reset_level"]
 [connection signal="spawn_destination_marker" from="Player" to="." method="spawn_destination_marker"]
-[connection signal="pickable" from="Pickable" to="." method="check_pickable"]
-[connection signal="set_destination" from="Pickable" to="." method="set_destination"]
-[connection signal="pickable" from="Pickable2" to="." method="check_pickable"]
-[connection signal="set_destination" from="Pickable2" to="." method="set_destination"]
 [connection signal="set_destination" from="Platform" to="." method="set_destination"]
 [connection signal="set_destination" from="Platform5" to="." method="set_destination"]
 [connection signal="set_destination" from="Platform3" to="." method="set_destination"]
@@ -107,6 +99,8 @@ autoplay = true
 [connection signal="set_destination" from="Ledge5" to="." method="set_destination"]
 [connection signal="set_destination" from="Ledge6" to="." method="set_destination"]
 [connection signal="level_done" from="Flag" to="." method="level_done"]
-[connection signal="pressed" from="Gui/Button" to="." method="switch_camera"]
+[connection signal="set_destination" from="Flag" to="." method="set_destination"]
+[connection signal="switch_camera" from="Gui" to="." method="switch_camera"]
+[connection signal="toggle_music" from="Gui" to="." method="toggle_music"]
 
 [editable path="Gui"]

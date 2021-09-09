@@ -8,6 +8,7 @@ const DRAG_FACTOR = 100.0
 const FALL_THRESHOLD = -0.5
 const GRAVITY_FACTOR = 10.0
 const FALL_FACTOR = 4.0
+const OBJECT_PICKED = "object picked"
 
 
 func round_vector3(vector, precision = DEFAULT_PRECISION):
@@ -43,3 +44,7 @@ func are_basis_equal_ignore_axis(base_basis, target_basis, axis, precision):
 	return result
 	
 	
+func get_level_state():
+	var level_state = {}
+	level_state[OBJECT_PICKED] = 0
+	return level_state

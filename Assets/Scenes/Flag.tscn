@@ -68,5 +68,7 @@ hue_variation_random = 0.5
 [node name="VictoryTimer" type="Timer" parent="."]
 wait_time = 2.0
 one_shot = true
+[connection signal="input_event" from="." to="." method="set_destination"]
 [connection signal="body_entered" from="Objective" to="." method="player_entered"]
+[connection signal="body_exited" from="Objective" to="." method="player_exited"]
 [connection signal="timeout" from="VictoryTimer" to="." method="stop_particles"]
