@@ -80,7 +80,6 @@ goal_disabled_flag = Color( 1, 0, 0, 1 )
 
 [node name="MusicBackground" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 9 )
-autoplay = true
 [connection signal="set_destination" from="Gound" to="." method="set_destination"]
 [connection signal="despawn_destination_marker" from="Player" to="." method="despawn_destination_marker"]
 [connection signal="reset_level" from="Player" to="." method="reset_level"]

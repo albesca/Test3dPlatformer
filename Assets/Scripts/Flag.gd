@@ -51,7 +51,7 @@ func disable_goal():
 	$Flag.material.albedo_color = goal_disabled_flag
 
 
-func set_destination(camera, event, click_position, click_normal, shape_idx):
+func set_destination(_camera, event, _click_position, _click_normal, _shape_idx):
 	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT \
 			and event.pressed:
 		emit_signal("set_destination", transform.origin)
