@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/the_green_plains.ogg-f7a91cff5442de7dfffc037c92fc0211.oggstr"
+
+[deps]
+
+source_file="res://Assets/Music/the_green_plains.ogg"
+dest_files=[ "res://.import/the_green_plains.ogg-f7a91cff5442de7dfffc037c92fc0211.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

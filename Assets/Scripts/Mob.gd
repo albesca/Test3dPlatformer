@@ -33,6 +33,8 @@ func _physics_process(delta):
 	if destination and standing_on_ground:
 		var angle_to_target = get_angle_to_target(\
 				get_destination_same_altitude(destination))
+		#TODO rotate this angle according to the normal of the collision with ground
+		#apply the rotation from Vector3.UP to collision normal to the velocity
 		if abs(angle_to_target) > angle_precision and \
 					(last_angle_to_destination == 0 or abs(angle_to_target) <= \
 					abs(last_angle_to_destination)):
@@ -56,7 +58,17 @@ func _physics_process(delta):
 					applied_acceleration = Global.DRAG_FACTOR * -1
 				speed = clamp(speed + applied_acceleration * delta, 0, \
 						walking_speed)
-				velocity = transform.basis.z * speed
+				var movement_direction = transform.basis.z
+				if $GroundDetector.is_colliding():
+					var ground_normal = $GroundDetector.get_collision_normal().normalized()
+					var angle_to = transform.basis.y.angle_to(ground_normal)
+					
+					if (angle_to > 0 + Global.DEFAULT_PRECISION) :
+						print(movement_direction)
+						movement_direction = (movement_direction + \
+								Vector3.DOWN*0.5).normalized()
+						print(movement_direction)
+				velocity = movement_direction * speed
 
 		else:
 			if abs(angle_to_target) < angle_precision or \

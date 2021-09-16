@@ -9,6 +9,7 @@ const FALL_THRESHOLD = -0.5
 const GRAVITY_FACTOR = 10.0
 const FALL_FACTOR = 4.0
 const OBJECT_PICKED = "object picked"
+const MAX_SLOPE = PI/3
 
 
 func round_vector3(vector, precision = DEFAULT_PRECISION):

@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/green_grass_waltz.ogg-132a4e4a782a80e09492383e1eea50c5.oggstr"
+
+[deps]
+
+source_file="res://Assets/Music/green_grass_waltz.ogg"
+dest_files=[ "res://.import/green_grass_waltz.ogg-132a4e4a782a80e09492383e1eea50c5.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
