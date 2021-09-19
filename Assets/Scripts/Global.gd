@@ -10,6 +10,9 @@ const GRAVITY_FACTOR = 10.0
 const FALL_FACTOR = 4.0
 const OBJECT_PICKED = "object picked"
 const MAX_SLOPE = PI/3
+const STATE_ON_GROUND = "state on ground"
+const STATE_FALLING = "state falling"
+const STATE_JUMPING = "state jumping"
 
 
 func round_vector3(vector, precision = DEFAULT_PRECISION):

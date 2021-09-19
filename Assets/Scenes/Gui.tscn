@@ -39,7 +39,6 @@ __meta__ = {
 }
 
 [node name="DebugData" type="Control" parent="."]
-visible = false
 margin_right = 40.0
 margin_bottom = 40.0
 __meta__ = {
@@ -47,6 +46,7 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="DebugData"]
+visible = false
 margin_top = 27.0
 margin_right = 40.0
 margin_bottom = 41.0
@@ -55,11 +55,13 @@ __meta__ = {
 }
 
 [node name="Label2" type="Label" parent="DebugData"]
+visible = false
 margin_top = 54.0
 margin_right = 40.0
 margin_bottom = 68.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
 [connection signal="pressed" from="SwitchCamera" to="." method="switch_camera"]
 [connection signal="toggled" from="ToggleMusic" to="." method="toggle_music"]

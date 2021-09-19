@@ -30,10 +30,12 @@ func _process(_delta):
 
 	if counter > 15:
 		counter = 0
-		$Gui/DebugData/Label.text = str($Player.transform)
-		$Gui/DebugData/Label2.text = str(round($Player.velocity.x * 100.0) / \
-				100.0) + " - " + str(round($Player.velocity.y * 100.0) / \
-				100.0) + " - " + str(round($Player.velocity.x * 100.0) / 100.0) 
+#		$Gui/DebugData/Label.text = str($Player.transform)
+#		$Gui/DebugData/Label2.text = str(round($Player.velocity.x * 100.0) / \
+#				100.0) + " - " + str(round($Player.velocity.y * 100.0) / \
+#				100.0) + " - " + str(round($Player.velocity.x * 100.0) / 100.0) 
+		$Gui/DebugData/Label.text = str($Player.velocity)
+		$Gui/DebugData/Label2.text = str($Player.last_angle_to_destination) 
 	else:
 		counter += 1
 

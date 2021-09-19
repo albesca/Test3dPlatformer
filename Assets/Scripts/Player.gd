@@ -1,4 +1,4 @@
-extends "res://Assets/Scripts/Mob.gd"
+extends "res://Assets/Scripts/MobNew.gd"
 
 signal reset_level
 signal spawn_destination_marker(position)
@@ -22,33 +22,57 @@ func _process(_delta):
 		reset_player()
 
 		
+func is_on_ground():
+	return is_on_floor() or $GroundDetector.is_colliding()
+
+
+func get_ground_normal():
+	var result = Vector3.ZERO
+	if is_on_floor():
+		result = get_floor_normal()
+	elif $GroundDetector.is_colliding():
+		result = $GroundDetector.get_collision_normal()
+		
+	return result
+
+
+func check_distance():
+	var distance = transform.origin.distance_to(destination)
+	if distance > distance_precision * 2.0:
+		destination_far = true
+
+
 func jump(_camera, event, click_position, _click_normal, _shape_idx):
 	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT \
 			and event.pressed:
-		if standing_on_ground and !jumping:
+		if mob_state == Global.STATE_ON_GROUND:
 			reset_destination()
-			velocity += get_jump_vector(click_position.y - transform.origin.y) \
-					* jump_strenght
-			jumping = true
-			print(velocity)
-		else:
-			print("I can't jump in midair!")
+			jump_impulse = get_jump_vector(click_position.y - \
+					transform.origin.y) * jump_strenght
+
+
+func get_angle_precision(distance):
+	var distance_factor = cos(clamp(abs(distance - distance_precision), 0, \
+			PI / 2)) * 3
+	return angle_precision * (1 + distance_factor)
 
 
 func set_destination(new_destination):
 	reset_destination()
 	destination = new_destination
+	check_distance()
 	emit_signal("spawn_destination_marker", destination)
 	print(transform.origin)
 	print(destination)
 
 
 func reset_destination():
-	destination = null
-	last_distance_to_destination = 0
-	last_angle_to_destination = 0
-	speed = 0
-	emit_signal("despawn_destination_marker")
+	if destination:
+		destination = null
+		last_distance_to_destination = 0
+		last_angle_to_destination = 0
+		speed = 0
+		emit_signal("despawn_destination_marker")
 
 
 func reset_player():
