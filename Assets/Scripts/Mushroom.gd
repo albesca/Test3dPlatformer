@@ -1,10 +1,7 @@
-extends StaticBody
+extends Spatial
 
 
-signal set_destination(destination_position)
-export var see_through = false
-var check_obstruction
-var base_albedo
+signal set_destination(destination)
 
 
 func set_destination(_camera, event, click_position, click_normal, _shape_idx):
