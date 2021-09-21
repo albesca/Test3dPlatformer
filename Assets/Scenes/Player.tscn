@@ -65,6 +65,7 @@ collision_mask = 8
 [node name="CollisionShape" type="CollisionShape" parent="ObstructionArea"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0 )
 shape = SubResource( 4 )
+
 [connection signal="input_event" from="." to="." method="jump"]
 [connection signal="body_entered" from="ObstructionArea" to="." method="potential_obstruction_entered"]
 [connection signal="body_exited" from="ObstructionArea" to="." method="potential_obstruction_exited"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Assets/Scenes/Ground.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Assets/Scripts/Level.gd" type="Script" id=2]
@@ -10,6 +10,8 @@
 [ext_resource path="res://Assets/Music/waltz_piano.ogg" type="AudioStream" id=8]
 [ext_resource path="res://Assets/Scenes/Ramp.tscn" type="PackedScene" id=9]
 [ext_resource path="res://Assets/Scenes/Mushroom.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Assets/Scenes/GrassPatch.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Assets/Scenes/Switch.tscn" type="PackedScene" id=12]
 
 [node name="Level" type="Spatial"]
 script = ExtResource( 2 )
@@ -88,6 +90,36 @@ stream = ExtResource( 8 )
 
 [node name="Mushroom" parent="." instance=ExtResource( 10 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, -20 )
+
+[node name="GrassPatch" parent="." instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0112226, 0 )
+
+[node name="GrassPatch2" parent="." instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, -0.01, 0 )
+
+[node name="GrassPatch3" parent="." instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.011, -5 )
+
+[node name="GrassPatch4" parent="." instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, -0.01, -5 )
+
+[node name="GrassPatch5" parent="." instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.95, 20 )
+
+[node name="GrassPatch6" parent="." instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 3.95, 20 )
+
+[node name="GrassPatch7" parent="." instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.95, 15 )
+
+[node name="GrassPatch8" parent="." instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 3.95, 15 )
+
+[node name="Switch" parent="." instance=ExtResource( 12 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6.3839 )
+
+[node name="Switch2" parent="." instance=ExtResource( 12 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.18268, 0, 6.3839 )
 
 [connection signal="set_destination" from="Gound" to="." method="set_destination"]
 [connection signal="despawn_destination_marker" from="Player" to="." method="despawn_destination_marker"]

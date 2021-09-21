@@ -6,7 +6,7 @@
 extents = Vector3( 50, 0.5, 50 )
 
 [sub_resource type="SpatialMaterial" id=2]
-albedo_color = Color( 0.054902, 0.780392, 0.0666667, 1 )
+albedo_color = Color( 0.690196, 0.458824, 0.156863, 1 )
 
 [node name="Gound" type="StaticBody"]
 collision_layer = 8
@@ -23,4 +23,5 @@ width = 100.0
 height = 1.0
 depth = 100.0
 material = SubResource( 2 )
+
 [connection signal="input_event" from="." to="." method="set_destination"]
