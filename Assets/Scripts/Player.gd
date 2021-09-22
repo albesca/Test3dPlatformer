@@ -1,4 +1,4 @@
-extends "res://Assets/Scripts/MobNew.gd"
+extends "res://Assets/Scripts/Mob.gd"
 
 signal reset_level
 signal spawn_destination_marker(position)

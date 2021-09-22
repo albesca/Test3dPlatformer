@@ -44,11 +44,13 @@ func stop_particles():
 func enable_goal():
 	goal_enabled = true
 	$Flag.material.albedo_color = goal_enabled_flag
+	print("goal enabled")
 	
 	
 func disable_goal():
 	goal_enabled = false
 	$Flag.material.albedo_color = goal_disabled_flag
+	print("goal disabled")
 
 
 func set_destination(_camera, event, _click_position, _click_normal, _shape_idx):

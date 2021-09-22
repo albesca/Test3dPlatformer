@@ -9,6 +9,12 @@ const FALL_THRESHOLD = -0.5
 const GRAVITY_FACTOR = 10.0
 const FALL_FACTOR = 4.0
 const OBJECT_PICKED = "object picked"
+const SWITCHES_STATE = "switches state"
+const SWITCHES_LIST = "switches list"
+const OBJECTIVE_TYPE = "objective type"
+const OBJECT_TYPE = "object type"
+const OBJECTS_LIST = "objects list"
+const OBJECT_MIN_QUANTITY = "object min quantity"
 const MAX_SLOPE = PI/3
 const STATE_ON_GROUND = "state on ground"
 const STATE_FALLING = "state falling"
@@ -50,5 +56,12 @@ func are_basis_equal_ignore_axis(base_basis, target_basis, axis, precision):
 	
 func get_level_state():
 	var level_state = {}
-	level_state[OBJECT_PICKED] = 0
+	level_state[OBJECT_PICKED] = {
+		OBJECTIVE_TYPE: OBJECT_MIN_QUANTITY,
+		OBJECTS_LIST: {}
+	}
+	level_state[SWITCHES_STATE] = {
+		OBJECTIVE_TYPE: SWITCHES_STATE,
+		SWITCHES_LIST: {}
+	}
 	return level_state

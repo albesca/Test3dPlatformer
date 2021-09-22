@@ -21,6 +21,7 @@ pickable_positions = [ Vector3( 10, 0, 0 ), Vector3( -20, 8, 20 ), Vector3( -5, 
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
 collision_mask = 12
+distance_precision = 1.25
 jump_strenght = 12.0
 
 [node name="Camera2" type="Camera" parent="Player"]
@@ -115,10 +116,14 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.95, 15 )
 [node name="GrassPatch8" parent="." instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 3.95, 15 )
 
-[node name="Switch" parent="." instance=ExtResource( 12 )]
+[node name="Switch" parent="." groups=[
+"switches",
+] instance=ExtResource( 12 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6.3839 )
 
-[node name="Switch2" parent="." instance=ExtResource( 12 )]
+[node name="Switch2" parent="." groups=[
+"switches",
+] instance=ExtResource( 12 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.18268, 0, 6.3839 )
 
 [connection signal="set_destination" from="Gound" to="." method="set_destination"]
@@ -145,5 +150,10 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.18268, 0, 6.3839 )
 [connection signal="switch_camera" from="Gui" to="." method="switch_camera"]
 [connection signal="toggle_music" from="Gui" to="." method="toggle_music"]
 [connection signal="set_destination" from="Mushroom" to="." method="set_destination"]
+[connection signal="interactable" from="Switch" to="." method="check_interactable"]
+[connection signal="set_destination" from="Switch" to="." method="set_destination"]
+[connection signal="update_interactable" from="Switch" to="." method="update_switch"]
+[connection signal="interactable" from="Switch2" to="." method="check_interactable"]
+[connection signal="set_destination" from="Switch2" to="." method="set_destination"]
 
 [editable path="Gui"]

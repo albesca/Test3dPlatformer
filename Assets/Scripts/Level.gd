@@ -13,9 +13,9 @@ var pickables
 
 func _ready():
 	build_pickables()
-	music = true
 	build_level_goal()
-	level_state = Global.get_level_state()
+	build_level_state()
+	music = true
 	cameras = [$Player/BackCamera, $Player/LeftCamera, $Player/FrontCamera, \
 			$Player/RightCamera]
 	reset_camera()
@@ -71,7 +71,7 @@ func toggle_music(toggle):
 
 
 func reset_level():
-	level_state = Global.get_level_state()
+	build_level_state()
 	build_pickables()
 	reset_camera()
 	$Flag.reset()
@@ -95,14 +95,20 @@ func despawn_destination_marker():
 		destination_marker.queue_free()
 
 
-func check_pickable(object, pickable):
-	if pickable:
+func check_interactable(object, interactable):
+	if interactable:
 		if $Player.destination == object.transform.origin:
-			object.pick()
+			object.interact()
 
 
 func picked_object(object):
-	level_state[Global.OBJECT_PICKED] += 1
+	var object_name = object.interactable_name
+	var objects_list = level_state[Global.OBJECT_PICKED][Global.OBJECTS_LIST]
+	if !object_name in objects_list.keys():
+		objects_list[object_name] = 1
+	else:
+		objects_list[object_name] += 1
+
 	var index = pickables.find(object)
 	if index > -1:
 		pickables.remove(index)
@@ -111,20 +117,70 @@ func picked_object(object):
 	
 
 func build_level_goal():
-	level_goal = {}
-	level_goal[Global.OBJECT_PICKED] = 2
+	level_goal = Global.get_level_state()
+	level_goal[Global.OBJECT_PICKED][Global.OBJECTS_LIST] = {
+		"test pickable": 2
+	}
+	level_goal[Global.SWITCHES_STATE][Global.SWITCHES_LIST] = {
+		$Switch.interactable_name: false,
+		$Switch2.interactable_name: false
+	}
+
+
+func build_level_state():
+	level_state = Global.get_level_state()
+	level_state[Global.SWITCHES_STATE][Global.SWITCHES_LIST] = {}
+	var switches = get_tree().get_nodes_in_group("switches")
+	for switch in switches:
+		level_state[Global.SWITCHES_STATE][Global.SWITCHES_LIST][\
+				switch.interactable_name] = switch.switch_position
 
 
 func check_level_state():
 	var level_goals_reached = false
 	for key in level_goal.keys():
-		if key in level_state.keys() and level_state[key] >= level_goal[key]:
-			level_goals_reached = true
+		var found_unreached_goal = false
+		if key in level_state.keys():
+			var current_goal = level_goal[key]
+			var current_state = level_state[key]
+			if current_goal[Global.OBJECTIVE_TYPE] == Global.SWITCHES_STATE:
+				var switch_goals = current_goal[Global.SWITCHES_LIST]
+				var switch_states = current_state[Global.SWITCHES_LIST]
+				for switch_name in switch_goals.keys():
+					if switch_name in switch_states.keys() and \
+							switch_goals[switch_name] == \
+							switch_states[switch_name]:
+						level_goals_reached = true
+					else:
+						level_goals_reached = false
+						found_unreached_goal = true
+						break
+						
+				if found_unreached_goal:
+					break
+			elif current_goal[Global.OBJECTIVE_TYPE] == \
+					Global.OBJECT_MIN_QUANTITY:
+				var object_goals = current_goal[Global.OBJECTS_LIST]
+				var object_states = current_state[Global.OBJECTS_LIST]
+				for object_name in object_goals.keys():
+					if object_name in object_states.keys() and \
+							object_goals[object_name] <= \
+							object_states[object_name]:
+						level_goals_reached = true
+					else:
+						level_goals_reached = false
+						found_unreached_goal = true
+						break
+						
+				if found_unreached_goal:
+					break
 		else:
 			level_goals_reached = false
 	
 	if level_goals_reached:
 		$Flag.enable_goal()
+	else:
+		$Flag.disable_goal()
 
 
 func build_pickables():
@@ -133,8 +189,15 @@ func build_pickables():
 	for pickable_position in pickable_positions:
 		var pickable = pickable_scene.instance()
 		pickable.transform.origin = pickable_position
-		pickable.connect("picked", self, "picked_object")
-		pickable.connect("pickable", self, "check_pickable")
+		pickable.connect("interact", self, "picked_object")
+		pickable.connect("interactable", self, "check_interactable")
 		pickable.connect("set_destination", self, "set_destination")
+		pickable.interactable_name = "test pickable"
 		add_child(pickable)
 		pickables.append(pickable)
+
+
+func update_switch(switch_name, position):
+	var switches_list = level_state[Global.SWITCHES_STATE][Global.SWITCHES_LIST]
+	switches_list[switch_name] = position
+	check_level_state()
