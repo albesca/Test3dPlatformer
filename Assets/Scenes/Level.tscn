@@ -89,8 +89,25 @@ goal_disabled_flag = Color( 1, 0, 0, 1 )
 [node name="MusicBackground" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 8 )
 
-[node name="Mushroom" parent="." instance=ExtResource( 10 )]
+[node name="Mushroom" parent="." groups=[
+"mushrooms",
+] instance=ExtResource( 10 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, -20 )
+
+[node name="Mushroom2" parent="." groups=[
+"mushrooms",
+] instance=ExtResource( 10 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 28.5304, 0, -16.9803 )
+
+[node name="Mushroom3" parent="." groups=[
+"mushrooms",
+] instance=ExtResource( 10 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 23.1132, 0, -10.684 )
+
+[node name="Mushroom4" parent="." groups=[
+"mushrooms",
+] instance=ExtResource( 10 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 32.5545, 0, -28.1013 )
 
 [node name="GrassPatch" parent="." instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0112226, 0 )
@@ -120,11 +137,13 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 3.95, 15 )
 "switches",
 ] instance=ExtResource( 12 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6.3839 )
+interactable_name = "test switch 1"
 
 [node name="Switch2" parent="." groups=[
 "switches",
 ] instance=ExtResource( 12 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.18268, 0, 6.3839 )
+interactable_name = "test switch 2"
 
 [connection signal="set_destination" from="Gound" to="." method="set_destination"]
 [connection signal="despawn_destination_marker" from="Player" to="." method="despawn_destination_marker"]
@@ -150,6 +169,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.18268, 0, 6.3839 )
 [connection signal="switch_camera" from="Gui" to="." method="switch_camera"]
 [connection signal="toggle_music" from="Gui" to="." method="toggle_music"]
 [connection signal="set_destination" from="Mushroom" to="." method="set_destination"]
+[connection signal="set_destination" from="Mushroom2" to="." method="set_destination"]
+[connection signal="set_destination" from="Mushroom3" to="." method="set_destination"]
+[connection signal="set_destination" from="Mushroom4" to="." method="set_destination"]
 [connection signal="interactable" from="Switch" to="." method="check_interactable"]
 [connection signal="set_destination" from="Switch" to="." method="set_destination"]
 [connection signal="update_interactable" from="Switch" to="." method="update_switch"]

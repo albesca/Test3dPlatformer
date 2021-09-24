@@ -9,12 +9,16 @@ var level_goal
 var music
 export (Array, Vector3) var pickable_positions = []
 var pickables
+var switches_base_state = {}
 
 
 func _ready():
+	Global.init_rng(150)
 	build_pickables()
 	build_level_goal()
+	get_switches_base_state()
 	build_level_state()
+	init_mushrooms()
 	music = true
 	cameras = [$Player/BackCamera, $Player/LeftCamera, $Player/FrontCamera, \
 			$Player/RightCamera]
@@ -71,6 +75,7 @@ func toggle_music(toggle):
 
 
 func reset_level():
+	reset_switches()
 	build_level_state()
 	build_pickables()
 	reset_camera()
@@ -201,3 +206,22 @@ func update_switch(switch_name, position):
 	var switches_list = level_state[Global.SWITCHES_STATE][Global.SWITCHES_LIST]
 	switches_list[switch_name] = position
 	check_level_state()
+
+
+func init_mushrooms():
+	var mushrooms = get_tree().get_nodes_in_group("mushrooms")
+	for mushroom in mushrooms:
+		mushroom.init()
+
+
+func reset_switches():
+	var switches = get_tree().get_nodes_in_group("switches")
+	for switch in switches:
+		switch.switch_position = switches_base_state[switch.interactable_name]
+		switch.init()
+
+
+func get_switches_base_state():
+	var switches = get_tree().get_nodes_in_group("switches")
+	for switch in switches:
+		switches_base_state[switch.interactable_name] = switch.switch_position

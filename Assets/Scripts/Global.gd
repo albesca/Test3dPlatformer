@@ -20,6 +20,13 @@ const STATE_ON_GROUND = "state on ground"
 const STATE_FALLING = "state falling"
 const STATE_JUMPING = "state jumping"
 
+var rn_generator
+
+
+func init_rng(rng_seed):
+	rn_generator = RandomNumberGenerator.new()
+	rn_generator.seed = rng_seed
+
 
 func round_vector3(vector, precision = DEFAULT_PRECISION):
 	var result = Vector3(
